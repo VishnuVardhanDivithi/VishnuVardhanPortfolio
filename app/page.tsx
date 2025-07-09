@@ -436,15 +436,14 @@ export default function Portfolio() {
             </div>
 
             <div className="flex justify-center space-x-8">
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=vishnuvardhandivithi9550@gmail.com&su=Portfolio%20Contact&body=Hi%20Vishnu,%0A%0AI%20found%20your%20portfolio%20and%20would%20like%20to%20connect.%0A%0ABest%20regards,"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-blue-600 transition-all duration-300 transform hover:scale-110"
+              <button
+                onClick={handleEmailClick}
+                disabled={buttonStates.email}
+                className="text-gray-600 hover:text-blue-600 transition-all duration-300 transform hover:scale-110 disabled:opacity-70 disabled:scale-100"
                 aria-label="Send email"
               >
                 <Mail className="h-7 w-7" />
-              </a>
+              </button>
               <button
                 onClick={() => handleExternalLink("https://linkedin.com/in/vishnuvardhandivithi", "linkedin-hero")}
                 disabled={buttonStates["linkedin-hero"]}

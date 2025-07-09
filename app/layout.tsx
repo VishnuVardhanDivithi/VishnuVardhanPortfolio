@@ -6,12 +6,9 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Vishnu's Portfolio",
+  title: "Vishnu&nbsp;Vardhan · Portfolio",
   description: "Personal portfolio of Vishnu Vardhan Divithi",
-  generator: 'v0.dev',
-  icons: {
-    icon: '/myphoto.png',
-  },
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
