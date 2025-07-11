@@ -58,17 +58,6 @@ export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home")
 
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  })
-  const [formErrors, setFormErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-  const [submitMessage, setSubmitMessage] = useState("")
   const [buttonStates, setButtonStates] = useState<{ [key: string]: boolean }>({})
 
   useEffect(() => {
@@ -168,127 +157,6 @@ export default function Portfolio() {
     setTimeout(() => {
       setButtonStates((prev) => ({ ...prev, phone: false }))
     }, 300)
-  }
-
-  const validateForm = (): boolean => {
-    const errors: FormErrors = {}
-
-    // Name validation
-    if (!formData.name.trim()) {
-      errors.name = "Name is required"
-    } else if (formData.name.trim().length < 2) {
-      errors.name = "Name must be at least 2 characters"
-    } else if (formData.name.trim().length > 100) {
-      errors.name = "Name must be less than 100 characters"
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!formData.email.trim()) {
-      errors.email = "Email is required"
-    } else if (!emailRegex.test(formData.email)) {
-      errors.email = "Please enter a valid email address"
-    } else if (formData.email.length > 254) {
-      errors.email = "Email address is too long"
-    }
-
-    // Subject validation
-    if (!formData.subject.trim()) {
-      errors.subject = "Subject is required"
-    } else if (formData.subject.trim().length < 5) {
-      errors.subject = "Subject must be at least 5 characters"
-    } else if (formData.subject.trim().length > 200) {
-      errors.subject = "Subject must be less than 200 characters"
-    }
-
-    // Message validation
-    if (!formData.message.trim()) {
-      errors.message = "Message is required"
-    } else if (formData.message.trim().length < 10) {
-      errors.message = "Message must be at least 10 characters"
-    } else if (formData.message.trim().length > 2000) {
-      errors.message = "Message must be less than 2000 characters"
-    }
-
-    setFormErrors(errors)
-    return Object.keys(errors).length === 0
-  }
-
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-
-    // Clear specific field error when user starts typing
-    if (formErrors[field]) {
-      setFormErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
-
-    // Clear submit status when user modifies form
-    if (submitStatus !== "idle") {
-      setSubmitStatus("idle")
-      setSubmitMessage("")
-    }
-  }
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) {
-      return
-    }
-
-    setIsSubmitting(true)
-    setSubmitStatus("idle")
-    setSubmitMessage("")
-
-    try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          subject: formData.subject.trim(),
-          message: formData.message.trim(),
-        }),
-      })
-
-      const data: EmailResponse = await response.json()
-
-      if (response.ok && data.success) {
-        setSubmitStatus("success")
-        setSubmitMessage(data.message || "Message sent successfully! I'll get back to you soon.")
-
-        // Reset form after successful submission
-        setTimeout(() => {
-          setFormData({ name: "", email: "", subject: "", message: "" })
-          setSubmitStatus("idle")
-          setSubmitMessage("")
-        }, 5000)
-      } else {
-        throw new Error(data.error || "Failed to send message")
-      }
-    } catch (error) {
-      console.error("Form submission error:", error)
-      setSubmitStatus("error")
-
-      if (error instanceof Error) {
-        if (error.message.includes("network") || error.message.includes("fetch")) {
-          setSubmitMessage("Network error. Please check your connection and try again.")
-        } else if (error.message.includes("authentication")) {
-          setSubmitMessage(
-            "Email service temporarily unavailable. Please contact me directly at vishnuvardhandivithi9550@gmail.com",
-          )
-        } else {
-          setSubmitMessage(error.message || "Failed to send message. Please try again or contact me directly.")
-        }
-      } else {
-        setSubmitMessage("An unexpected error occurred. Please try again or contact me directly.")
-      }
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   const navItems = [
@@ -432,6 +300,15 @@ export default function Portfolio() {
                 style={{ textDecoration: 'none' }}
               >
                 Get In Touch
+              </a>
+              <a
+                href="/Divithi_Vishnu_Vardhan_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-center"
+                style={{ textDecoration: 'none' }}
+              >
+                My Resume
               </a>
             </div>
 
